@@ -67,6 +67,35 @@
               "traceId": ""
             }
           ]
+        },
+        {
+          "scope": {
+            "name": "net/http/client"
+          },
+          "spans": [
+            {
+              "attributes": [
+                {
+                  "key": "http.method",
+                  "value": {
+                    "stringValue": "GET"
+                  }
+                },
+                {
+                  "key": "http.target",
+                  "value": {
+                    "stringValue": "/hello"
+                  }
+                }
+              ],
+              "kind": 3,
+              "name": "/hello",
+              "parentSpanId": "",
+              "spanId": "xxxxx",
+              "status": {},
+              "traceId": "xxxxx"
+            }
+          ]
         }
       ]
     }
