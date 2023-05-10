@@ -10,6 +10,12 @@
             }
           },
           {
+            "key": "telemetry.auto.version",
+            "value": {
+              "stringValue": "v0.2.0-alpha"
+            }
+          },
+          {
             "key": "telemetry.sdk.language",
             "value": {
               "stringValue": "go"
@@ -39,32 +45,11 @@
                 }
               ],
               "kind": 2,
-              "name": "/hello",
+              "name": "GET /hello",
               "parentSpanId": "",
               "spanId": "xxxxx",
               "status": {},
               "traceId": "xxxxx"
-            },
-            {
-              "attributes": [
-                {
-                  "key": "http.method",
-                  "value": {
-                    "stringValue": ""
-                  }
-                },
-                {
-                  "key": "http.target",
-                  "value": {
-                    "stringValue": ""
-                  }
-                }
-              ],
-              "kind": 2,
-              "parentSpanId": "",
-              "spanId": "",
-              "status": {},
-              "traceId": ""
             }
           ]
         },
