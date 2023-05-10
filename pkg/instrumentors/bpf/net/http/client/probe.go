@@ -21,15 +21,15 @@ import (
 	"golang.org/x/sys/unix"
 )
 
-//go:generate go run github.com/cilium/ebpf/cmd/bpf2go -target bpfel -cc clang -cflags $CFLAGS bpf ./bpf/probe.bpf.c
+//go:generate go run github.com/cilium/ebpf/cmd/bpf2go -target amd64,arm64 -cc clang -cflags $CFLAGS bpf ./bpf/probe.bpf.c
 
 type HttpEvent struct {
 	StartTime         uint64
 	EndTime           uint64
 	Method            [10]byte
 	Path              [100]byte
-	SpanContext       context.EbpfSpanContext
-	ParentSpanContext context.EbpfSpanContext
+	SpanContext       context.EBPFSpanContext
+	ParentSpanContext context.EBPFSpanContext
 }
 
 type httpClientInstrumentor struct {
@@ -52,7 +52,7 @@ func (h *httpClientInstrumentor) FuncNames() []string {
 }
 
 func (h *httpClientInstrumentor) Load(ctx *context.InstrumentorContext) error {
-	spec, err := ctx.Injector.Inject(loadBpf, "go", ctx.TargetDetails.GoVersion.Original(), []*inject.InjectStructField{
+	spec, err := ctx.Injector.Inject(loadBpf, "go", ctx.TargetDetails.GoVersion.Original(), []*inject.StructField{
 		{
 			VarName:    "method_ptr_pos",
 			StructName: "net/http.Request",
@@ -73,6 +73,11 @@ func (h *httpClientInstrumentor) Load(ctx *context.InstrumentorContext) error {
 			StructName: "net/http.Request",
 			Field:      "Header",
 		},
+		{
+			VarName:    "ctx_ptr_pos",
+			StructName: "net/http.Request",
+			Field:      "ctx",
+		},
 	}, true)
 
 	if err != nil {
@@ -82,7 +87,7 @@ func (h *httpClientInstrumentor) Load(ctx *context.InstrumentorContext) error {
 	h.bpfObjects = &bpfObjects{}
 	err = spec.LoadAndAssign(h.bpfObjects, &ebpf.CollectionOptions{
 		Maps: ebpf.MapOptions{
-			PinPath: bpffs.BpfFsPath,
+			PinPath: bpffs.BPFFsPath,
 		},
 	})
 
